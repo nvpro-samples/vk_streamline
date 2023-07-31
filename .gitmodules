@@ -1,0 +1,3 @@
+[submodule "streamline"]
+	path = deps/streamline
+	url = https://github.com/NVIDIAGameWorks/Streamline.git
