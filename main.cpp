@@ -19,6 +19,7 @@
 
 #include "nvvkhl/appbase_vk.hpp"
 #include "backends/imgui_impl_glfw.h"
+#include "backends/imgui_impl_vulkan.h"
 #include "nvh/primitives.hpp"
 #include "nvvk/context_vk.hpp"
 #include "nvvk/descriptorsets_vk.hpp"
