@@ -142,11 +142,11 @@ public:
     // Get view information from camera
     const glm::mat4 viewMatrix = CameraManip.getMatrix();
     const glm::vec2 clipPlanes = CameraManip.getClipPlanes();
-#if USE_D3D_CLIP_SPACE
-    const glm::mat4 projMatrix = glm::perspective01(CameraManip.getFov(), aspectRatio, clipPlanes.x, clipPlanes.y);
-#else
-    const glm::mat4 projMatrix =
+    glm::mat4 projMatrix =
         glm::perspectiveRH_ZO(glm::radians(CameraManip.getFov()), aspectRatio, clipPlanes.x, clipPlanes.y);
+#if !USE_D3D_CLIP_SPACE
+    // Flip the Y axis to convert from D3D to Vulkan:
+    projMatrix[1][1] *= -1;
 #endif
 
     glm::vec3 geye, gcenter, gup;
@@ -158,7 +158,7 @@ public:
     glm::vec3 forward = glm::normalize(center - eye);
 
     // Calculate pixel jitter offset using Halton sequence
-    glm::vec2 jitterOffset;
+    glm::vec2 jitterOffset = {};
 
     if(m_dlssOptions.mode != sl::DLSSMode::eOff)
     {
