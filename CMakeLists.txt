@@ -7,7 +7,7 @@ message(STATUS "-------------------------------")
 message(STATUS "Processing Project ${PROJECT_NAME}:")
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 set(STREAMLINE_MANUAL_HOOKING ON CACHE BOOL "Use manual hooking method of Streamline instead of linking against the interposer")
 
