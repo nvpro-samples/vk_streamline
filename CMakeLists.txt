@@ -74,7 +74,6 @@ macro(_add_package_Streamline)
 endmacro()
 
 _add_package_VulkanSDK()
-_add_package_VMA()
 _add_package_ImGUI()
 _add_package_Streamline() # Add after Vulkan SDK package, to potentially replace Vulkan library
 
