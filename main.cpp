@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+ * SPDX-FileCopyrightText: Copyright (c) 2023-2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,6 +18,7 @@
 #define VMA_IMPLEMENTATION
 
 #include <glm/glm.hpp>
+#include <vulkan/vk_enum_string_helper.h>
 
 #include "nvvkhl/appbase_vk.hpp"
 #include "backends/imgui_impl_glfw.h"
@@ -1036,7 +1037,7 @@ int main(int argc, char** argv)
   // Create window surface
   VkSurfaceKHR surface = VK_NULL_HANDLE;
 #if 0
-  if (NVVK_CHECK(glfwCreateWindowSurface(context.m_instance, window, nullptr, &surface)))
+  const VkResult surfaceResult = glfwCreateWindowSurface(context.m_instance, window, nullptr, &surface);
 #else
   VkWin32SurfaceCreateInfoKHR surfaceInfo = {VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR};
   GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
@@ -1044,9 +1045,11 @@ int main(int argc, char** argv)
   surfaceInfo.hwnd = glfwGetWin32Window(window);
 
   // Call vkCreateWin32SurfaceKHR directly so that it is routed through Streamline
-  if(NVVK_CHECK(vkCreateWin32SurfaceKHR(context.m_instance, &surfaceInfo, nullptr, &surface)))
+  const VkResult surfaceResult = vkCreateWin32SurfaceKHR(context.m_instance, &surfaceInfo, nullptr, &surface);
 #endif
+  if(VK_SUCCESS != surfaceResult)
   {
+    LOGE("Creating the window surface failed with code %s!\n", string_VkResult(surfaceResult));
     return static_cast<int>(sl::Result::eErrorVulkanAPI);
   }
 
